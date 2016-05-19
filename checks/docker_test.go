@@ -1,7 +1,8 @@
-package checks
+package checks_test
 
 import (
 	"testing"
+    "github.com/CiscoCloud/distributive/checks"
 )
 
 func TestDockerImage(t *testing.T) {
@@ -16,8 +17,8 @@ func TestDockerImage(t *testing.T) {
 		// inputs that should lead to failure
 		badEggs := [][]string{{"lkjbdakjsd"}, {"failme"}}
 		badEggs = append(badEggs, names...)
-		testParameters(validInputs, invalidInputs, DockerImage{}, t)
-		testCheck(goodEggs, badEggs, DockerImage{}, t)
+		testParameters(validInputs, invalidInputs, checks.DockerImage{}, t)
+		testCheck(goodEggs, badEggs, checks.DockerImage{}, t)
 	}
 }
 
@@ -35,8 +36,8 @@ func TestDockerImageRegexp(t *testing.T) {
 		goodEggs := [][]string{}
 		badEggs := [][]string{{"lkjbdakjsd{3}"}, {"failme+"}}
 		badEggs = append(badEggs, names...)
-		testParameters(validInputs, invalidInputs, DockerImageRegexp{}, t)
-		testCheck(goodEggs, badEggs, DockerImageRegexp{}, t)
+		testParameters(validInputs, invalidInputs, checks.DockerImageRegexp{}, t)
+		testCheck(goodEggs, badEggs, checks.DockerImageRegexp{}, t)
 	}
 }
 
@@ -50,8 +51,8 @@ func TestDockerRunning(t *testing.T) {
 		goodEggs := [][]string{}
 		badEggs := [][]string{{"lkjbdakjsd{3}"}, {"failme+"}}
 		badEggs = append(badEggs, names...)
-		testParameters(validInputs, invalidInputs, DockerRunning{}, t)
-		testCheck(goodEggs, badEggs, DockerRunning{}, t)
+		testParameters(validInputs, invalidInputs, checks.DockerRunning{}, t)
+		testCheck(goodEggs, badEggs, checks.DockerRunning{}, t)
 	}
 }
 
@@ -91,7 +92,7 @@ func TestDockerRunningRegexp(t *testing.T) {
 		goodEggs := [][]string{}
 		badEggs := [][]string{{"lkjbdakjsd{3}"}, {"failme+"}}
 		badEggs = append(badEggs, names...)
-		testParameters(validInputs, invalidInputs, DockerRunning{}, t)
-		testCheck(goodEggs, badEggs, DockerRunning{}, t)
+		testParameters(validInputs, invalidInputs, checks.DockerRunning{}, t)
+		testCheck(goodEggs, badEggs, checks.DockerRunning{}, t)
 	}
 }

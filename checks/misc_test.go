@@ -1,6 +1,9 @@
-package checks
+package checks_test
 
-import "testing"
+import (
+    "testing"
+    "github.com/CiscoCloud/distributive/checks"
+)
 
 func TestCommand(t *testing.T) {
 	t.Parallel()
@@ -13,8 +16,8 @@ func TestCommand(t *testing.T) {
 		{"sleep fail"}, {"cd /steppenwolf"}, {"mv /glass /bead-game"},
 	}
 	badEggs = append(badEggs, names...)
-	testParameters(validInputs, invalidInputs, Command{}, t)
-	testCheck(goodEggs, badEggs, Command{}, t)
+	testParameters(validInputs, invalidInputs, checks.Command{}, t)
+	testCheck(goodEggs, badEggs, checks.Command{}, t)
 }
 
 func TestCommandOutputMatches(t *testing.T) {
@@ -29,8 +32,8 @@ func TestCommandOutputMatches(t *testing.T) {
 		{"cp --help", "asdfalkjsdhldjfk"},
 		{"echo haskell", "curry"},
 	}
-	testParameters(validInputs, invalidInputs, CommandOutputMatches{}, t)
-	testCheck(goodEggs, badEggs, CommandOutputMatches{}, t)
+	testParameters(validInputs, invalidInputs, checks.CommandOutputMatches{}, t)
+	testCheck(goodEggs, badEggs, checks.CommandOutputMatches{}, t)
 }
 
 func TestRunning(t *testing.T) {
@@ -41,8 +44,8 @@ func TestRunning(t *testing.T) {
 	invalidInputs := notLengthOne
 	goodEggs := [][]string{}
 	badEggs := dirParameters
-	testParameters(validInputs, invalidInputs, Running{}, t)
-	testCheck(goodEggs, badEggs, Running{}, t)
+	testParameters(validInputs, invalidInputs, checks.Running{}, t)
+	testCheck(goodEggs, badEggs, checks.Running{}, t)
 }
 
 func TestParseSensorsOutput(t *testing.T) {
@@ -55,7 +58,7 @@ func TestParseSensorsOutput(t *testing.T) {
 	Core1 Temp:  +36.0°C
 	`
 	t.Parallel()
-	if len(parseSensorsOutput(sensorsOut)) < 1 {
+	if len(checks.ParseSensorsOutput(sensorsOut)) < 1 {
 		t.Errorf("parseSensorsOutput didn't parse correctly")
 	}
 }
@@ -64,7 +67,7 @@ func TestTemp(t *testing.T) {
 	t.Parallel()
 	validInputs := positiveInts[:len(positiveInts)-2] // only small ints
 	invalidInputs := append(append(names, notInts...), notLengthOne...)
-	testParameters(validInputs, invalidInputs, Temp{}, t)
+	testParameters(validInputs, invalidInputs, checks.Temp{}, t)
 }
 
 func TestModule(t *testing.T) {
@@ -73,8 +76,8 @@ func TestModule(t *testing.T) {
 	invalidInputs := notLengthOne
 	goodEggs := [][]string{}
 	badEggs := names
-	testParameters(validInputs, invalidInputs, Module{}, t)
-	testCheck(goodEggs, badEggs, Module{}, t)
+	testParameters(validInputs, invalidInputs, checks.Module{}, t)
+	testCheck(goodEggs, badEggs, checks.Module{}, t)
 }
 
 func TestKernelParameter(t *testing.T) {
@@ -86,13 +89,13 @@ func TestKernelParameter(t *testing.T) {
 		{"net.ipv4.conf.all.arp_accept"},
 	}
 	badEggs := names
-	testParameters(validInputs, invalidInputs, KernelParameter{}, t)
-	testCheck(goodEggs, badEggs, KernelParameter{}, t)
+	testParameters(validInputs, invalidInputs, checks.KernelParameter{}, t)
+	testCheck(goodEggs, badEggs, checks.KernelParameter{}, t)
 }
 
 func TestPHPConfig(t *testing.T) {
 	t.Parallel()
 	validInputs := appendParameter(names, "dummy-value")
 	invalidInputs := notLengthTwo
-	testParameters(validInputs, invalidInputs, PHPConfig{}, t)
+	testParameters(validInputs, invalidInputs, checks.PHPConfig{}, t)
 }

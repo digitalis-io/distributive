@@ -199,7 +199,8 @@ func (chk Temp) New(params []string) (chkutil.Check, error) {
 }
 
 // parse the output of `sensors` to get temperatures
-func parseSensorsOutput(out string) (Temps []int) {
+// FIXME: temporary public
+func ParseSensorsOutput(out string) (Temps []int) {
 	re := regexp.MustCompile(`Core\s\d+:\s+[\+\-](?P<Temp>\d+)\.*\d*(°|\s)C`)
 	for _, line := range regexp.MustCompile(`\n+`).Split(out, -1) {
 		if re.MatchString(line) {
@@ -224,7 +225,7 @@ func (chk Temp) Status() (int, string, error) {
 	if err != nil {
 		errutil.ExecError(cmd, string(out), err)
 	}
-	temps := parseSensorsOutput(string(out))
+	temps := ParseSensorsOutput(string(out))
 	if len(temps) <= 1 {
 		return 1, "", errors.New("Couldn't parse the output of lm-sensors")
 	}

@@ -25,13 +25,13 @@ Example parameters:
 */
 type ZooKeeperQuorum struct {
 	timeout time.Duration
-    config  string
+    Config  string
 }
 
 func init() { 
     chkutil.Register("ZooKeeperQuorum", func() chkutil.Check {
         return &ZooKeeperQuorum{
-            config: "/etc/zookeeper/conf/zoo.cfg",  /* default value, only for new k/v arg parsing */
+            Config: "/etc/zookeeper/conf/zoo.cfg",  /* default value, only for new k/v arg parsing */
         }
     })
 }
@@ -45,14 +45,14 @@ func (chk ZooKeeperQuorum) New(params []string) (chkutil.Check, error) {
 		return chk, errutil.ParameterTypeError{params[0], "time.Duration"}
 	}
 	chk.timeout = dur
-	chk.config = params[1]
+	chk.Config = params[1]
 	return chk, nil
 }
 
 
 func (chk ZooKeeperQuorum) LoadConfig() ([]string, error) {
     beginOfServerLine := regexp.MustCompile("^server\\.\\d+=(.*)$")
-    file, err := os.Open(chk.config)
+    file, err := os.Open(chk.Config)
     if err != nil {
         return nil, err
     }

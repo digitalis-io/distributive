@@ -1,7 +1,8 @@
-package checks
+package checks_test
 
 import (
 	"testing"
+    "github.com/CiscoCloud/distributive/checks"
 )
 
 var validHosts = [][]string{{"eff.org"}, {"mozilla.org"}, {"golang.org"}}
@@ -29,8 +30,8 @@ func TestPort(t *testing.T) {
 	// only take smaller ones
 	validInputs := positiveInts[:len(positiveInts)-2]
 	invalidInputs := append(notInts, negativeInts...)
-	testParameters(validInputs, invalidInputs, Port{}, t)
-	testCheck([][]string{}, closedPorts, Port{}, t)
+	testParameters(validInputs, invalidInputs, checks.Port{}, t)
+	testCheck([][]string{}, closedPorts, checks.Port{}, t)
 }
 
 func TestPortTCP(t *testing.T) {
@@ -38,8 +39,8 @@ func TestPortTCP(t *testing.T) {
 	// only take smaller ones
 	validInputs := positiveInts[:len(positiveInts)-2]
 	invalidInputs := append(notInts, negativeInts...)
-	testParameters(validInputs, invalidInputs, PortTCP{}, t)
-	testCheck([][]string{}, closedPorts, PortTCP{}, t)
+	testParameters(validInputs, invalidInputs, checks.PortTCP{}, t)
+	testCheck([][]string{}, closedPorts, checks.PortTCP{}, t)
 }
 
 func TestPortUDP(t *testing.T) {
@@ -47,8 +48,8 @@ func TestPortUDP(t *testing.T) {
 	// only take smaller ones
 	validInputs := positiveInts[:len(positiveInts)-2]
 	invalidInputs := append(notInts, negativeInts...)
-	testParameters(validInputs, invalidInputs, PortUDP{}, t)
-	testCheck([][]string{}, closedPorts, PortUDP{}, t)
+	testParameters(validInputs, invalidInputs, checks.PortUDP{}, t)
+	testCheck([][]string{}, closedPorts, checks.PortUDP{}, t)
 }
 
 func TestInterfaceExists(t *testing.T) {
@@ -57,8 +58,8 @@ func TestInterfaceExists(t *testing.T) {
 	invalidInputs := notLengthOne
 	goodEggs := [][]string{}
 	badEggs := [][]string{}
-	testParameters(validInputs, invalidInputs, InterfaceExists{}, t)
-	testCheck(goodEggs, badEggs, InterfaceExists{}, t)
+	testParameters(validInputs, invalidInputs, checks.InterfaceExists{}, t)
+	testCheck(goodEggs, badEggs, checks.InterfaceExists{}, t)
 }
 
 func TestUp(t *testing.T) {
@@ -67,8 +68,8 @@ func TestUp(t *testing.T) {
 	invalidInputs := notLengthOne
 	goodEggs := [][]string{}
 	badEggs := [][]string{}
-	testParameters(validInputs, invalidInputs, Up{}, t)
-	testCheck(goodEggs, badEggs, Up{}, t)
+	testParameters(validInputs, invalidInputs, checks.Up{}, t)
+	testCheck(goodEggs, badEggs, checks.Up{}, t)
 }
 
 func TestIP4(t *testing.T) {
@@ -77,8 +78,8 @@ func TestIP4(t *testing.T) {
 	invalidInputs := notLengthTwo
 	goodEggs := [][]string{}
 	badEggs := validInputs
-	testParameters(validInputs, invalidInputs, IP4{}, t)
-	testCheck(goodEggs, badEggs, IP4{}, t)
+	testParameters(validInputs, invalidInputs, checks.IP4{}, t)
+	testCheck(goodEggs, badEggs, checks.IP4{}, t)
 }
 
 func TestIP6(t *testing.T) {
@@ -87,16 +88,16 @@ func TestIP6(t *testing.T) {
 	invalidInputs := notLengthTwo
 	goodEggs := [][]string{}
 	badEggs := validInputs
-	testParameters(validInputs, invalidInputs, IP6{}, t)
-	testCheck(goodEggs, badEggs, IP6{}, t)
+	testParameters(validInputs, invalidInputs, checks.IP6{}, t)
+	testCheck(goodEggs, badEggs, checks.IP6{}, t)
 }
 
 func TestGatewayInterface(t *testing.T) {
 	t.Parallel()
 	validInputs := appendParameter(names, "0000:000:0000:000:0000:0000:000:0000")
 	validInputs = append(validInputs, appendParameter(names, "192.168.0.1")...)
-	testParameters(validInputs, notLengthTwo, IP6{}, t)
-	testCheck([][]string{}, validInputs, IP6{}, t)
+	testParameters(validInputs, notLengthTwo, checks.IP6{}, t)
+	testCheck([][]string{}, validInputs, checks.IP6{}, t)
 }
 
 func TestHost(t *testing.T) {
@@ -105,20 +106,20 @@ func TestHost(t *testing.T) {
 	invalidInputs := notLengthOne
 	goodEggs := validHosts
 	badEggs := invalidHosts
-	testParameters(validInputs, invalidInputs, Host{}, t)
-	testCheck(goodEggs, badEggs, Host{}, t)
+	testParameters(validInputs, invalidInputs, checks.Host{}, t)
+	testCheck(goodEggs, badEggs, checks.Host{}, t)
 }
 
 func TestTCP(t *testing.T) {
 	t.Parallel()
-	testParameters(names, notLengthOne, TCP{}, t)
-	testCheck(validHostsWithPort, invalidHostsWithPort, TCP{}, t)
+	testParameters(names, notLengthOne, checks.TCP{}, t)
+	testCheck(validHostsWithPort, invalidHostsWithPort, checks.TCP{}, t)
 }
 
 func TestUDP(t *testing.T) {
 	t.Parallel()
-	testParameters(names, notLengthOne, UDP{}, t)
-	testCheck(validHostsWithPort, invalidHostsWithPort, UDP{}, t)
+	testParameters(names, notLengthOne, checks.UDP{}, t)
+	testCheck(validHostsWithPort, invalidHostsWithPort, checks.UDP{}, t)
 }
 
 func TestTCPTimeout(t *testing.T) {
@@ -126,8 +127,8 @@ func TestTCPTimeout(t *testing.T) {
 	goodEggs := appendParameter(validHostsWithPort, "5s")
 	badEggs := appendParameter(validHostsWithPort, "1µs")
 	validInputs := appendParameter(names, "5s")
-	testParameters(validInputs, notLengthTwo, TCPTimeout{}, t)
-	testCheck(goodEggs, badEggs, TCPTimeout{}, t)
+	testParameters(validInputs, notLengthTwo, checks.TCPTimeout{}, t)
+	testCheck(goodEggs, badEggs, checks.TCPTimeout{}, t)
 }
 
 func TestUDPTimeout(t *testing.T) {
@@ -135,28 +136,28 @@ func TestUDPTimeout(t *testing.T) {
 	goodEggs := appendParameter(validHostsWithPort, "5s")
 	badEggs := appendParameter(validHostsWithPort, "1µs")
 	validInputs := appendParameter(names, "5s")
-	testParameters(validInputs, notLengthTwo, UDPTimeout{}, t)
-	testCheck(goodEggs, badEggs, UDPTimeout{}, t)
+	testParameters(validInputs, notLengthTwo, checks.UDPTimeout{}, t)
+	testCheck(goodEggs, badEggs, checks.UDPTimeout{}, t)
 }
 
 func TestRoutingTableDestination(t *testing.T) {
 	t.Parallel()
 	// TODO get a list of valid IP addresses for these valid params
 	invalidInputs := append(names, notLengthOne...)
-	testParameters([][]string{}, invalidInputs, RoutingTableDestination{}, t)
+	testParameters([][]string{}, invalidInputs, checks.RoutingTableDestination{}, t)
 	//testCheck([][]string{}, [][]string{}, RoutingTableDestination{}, t)
 }
 
 func TestRoutingTableInterface(t *testing.T) {
 	t.Parallel()
-	testParameters(names, notLengthOne, RoutingTableInterface{}, t)
-	testCheck([][]string{}, names, RoutingTableInterface{}, t)
+	testParameters(names, notLengthOne, checks.RoutingTableInterface{}, t)
+	testCheck([][]string{}, names, checks.RoutingTableInterface{}, t)
 }
 
 func TestRoutingTableGateway(t *testing.T) {
 	t.Parallel()
-	testParameters(names, notLengthOne, RoutingTableGateway{}, t)
-	testCheck([][]string{}, names, RoutingTableGateway{}, t)
+	testParameters(names, notLengthOne, checks.RoutingTableGateway{}, t)
+	testCheck([][]string{}, names, checks.RoutingTableGateway{}, t)
 }
 
 func TestReponseMatches(t *testing.T) {
@@ -168,8 +169,8 @@ func TestReponseMatches(t *testing.T) {
 		invalidInputs := notLengthTwo
 		goodEggs := appendParameter(validURLs, "html")
 		badEggs := appendParameter(validURLs, "asfdjhow012u")
-		testParameters(validInputs, invalidInputs, ResponseMatches{}, t)
-		testCheck(goodEggs, badEggs, ResponseMatches{}, t)
+		testParameters(validInputs, invalidInputs, checks.ResponseMatches{}, t)
+		testCheck(goodEggs, badEggs, checks.ResponseMatches{}, t)
 	}
 }
 
@@ -182,7 +183,7 @@ func TestReponseMatchesInsecure(t *testing.T) {
 		invalidInputs := notLengthTwo
 		goodEggs := appendParameter(validURLs, "html")
 		badEggs := appendParameter(validURLs, "asfdjhow012u")
-		testParameters(validInputs, invalidInputs, ResponseMatchesInsecure{}, t)
-		testCheck(goodEggs, badEggs, ResponseMatchesInsecure{}, t)
+		testParameters(validInputs, invalidInputs, checks.ResponseMatchesInsecure{}, t)
+		testCheck(goodEggs, badEggs, checks.ResponseMatchesInsecure{}, t)
 	}
 }

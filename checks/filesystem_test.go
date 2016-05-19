@@ -1,7 +1,8 @@
-package checks
+package checks_test
 
 import (
 	"testing"
+    "github.com/CiscoCloud/distributive/checks"
 )
 
 var fileParameters = [][]string{
@@ -37,8 +38,8 @@ func TestFile(t *testing.T) {
 	invalidInputs := notLengthOne
 	goodEggs := fileParameters
 	badEggs := append(dirParameters, symlinkParameters...)
-	testParameters(validInputs, invalidInputs, File{}, t)
-	testCheck(goodEggs, badEggs, File{}, t)
+	testParameters(validInputs, invalidInputs, checks.File{}, t)
+	testCheck(goodEggs, badEggs, checks.File{}, t)
 }
 
 func TestDirectory(t *testing.T) {
@@ -48,8 +49,8 @@ func TestDirectory(t *testing.T) {
 	invalidInputs := notLengthOne
 	goodEggs := dirParameters
 	badEggs := append(fileParameters, symlinkParameters...)
-	testParameters(validInputs, invalidInputs, Directory{}, t)
-	testCheck(goodEggs, badEggs, Directory{}, t)
+	testParameters(validInputs, invalidInputs, checks.Directory{}, t)
+	testCheck(goodEggs, badEggs, checks.Directory{}, t)
 }
 
 func TestSymlink(t *testing.T) {
@@ -59,8 +60,8 @@ func TestSymlink(t *testing.T) {
 	invalidInputs := notLengthOne
 	goodEggs := symlinkParameters
 	badEggs := append(dirParameters, fileParameters...)
-	testParameters(validInputs, invalidInputs, Symlink{}, t)
-	testCheck(goodEggs, badEggs, Symlink{}, t)
+	testParameters(validInputs, invalidInputs, checks.Symlink{}, t)
+	testCheck(goodEggs, badEggs, checks.Symlink{}, t)
 }
 
 // $1 - algorithm, $2 - check against, $3 - path
@@ -78,7 +79,7 @@ func TestChecksum(t *testing.T) {
 	// TODO this fails when testing
 	//goodEggs := [][]string{validInputs[0], validInputs[1]}
 	//badEggs := [][]string{validInputs[2], validInputs[3]}
-	testParameters(validInputs, invalidInputs, Checksum{}, t)
+	testParameters(validInputs, invalidInputs, checks.Checksum{}, t)
 	//testCheck(goodEggs, badEggs, Checksum{}, t)
 }
 
@@ -92,8 +93,8 @@ func TestFileMatches(t *testing.T) {
 	badEggs := [][]string{
 		{"/dev/null", "something"}, {"/proc/cpuinfo", "siddharthist"},
 	}
-	testParameters(validInputs, invalidInputs, FileMatches{}, t)
-	testCheck(goodEggs, badEggs, FileMatches{}, t)
+	testParameters(validInputs, invalidInputs, checks.FileMatches{}, t)
+	testCheck(goodEggs, badEggs, checks.FileMatches{}, t)
 }
 
 // $1 - path, $2 - givenMode (-rwxrwxrwx)
@@ -114,6 +115,6 @@ func TestPermissions(t *testing.T) {
 		{"/bin/", "-rwxr-xr-x"},
 	}
 	badEggs := appendParameter(fileParameters, "----------")
-	testParameters(validInputs, invalidInputs, Permissions{}, t)
-	testCheck(goodEggs, badEggs, Permissions{}, t)
+	testParameters(validInputs, invalidInputs, checks.Permissions{}, t)
+	testCheck(goodEggs, badEggs, checks.Permissions{}, t)
 }

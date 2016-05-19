@@ -1,4 +1,4 @@
-package checks
+package checks_test
 
 import (
 	"fmt"

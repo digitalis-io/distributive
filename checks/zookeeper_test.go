@@ -1,7 +1,8 @@
-package checks
+package checks_test
 
 import (
 	"testing"
+    "github.com/CiscoCloud/distributive/checks"
 )
 
 func TestZooKeeperRUOK(t *testing.T) {
@@ -20,7 +21,7 @@ func TestZooKeeperRUOK(t *testing.T) {
 		// inputs that should lead to success
 		goodEggs := [][]string{}
 		// inputs that should lead to failure
-		testParameters(validInputs, invalidInputs, ZooKeeperRUOK{}, t)
-		testCheck(goodEggs, validInputs, ZooKeeperRUOK{}, t)
+		testParameters(validInputs, invalidInputs, checks.ZooKeeperRUOK{}, t)
+		testCheck(goodEggs, validInputs, checks.ZooKeeperRUOK{}, t)
 	}
 }

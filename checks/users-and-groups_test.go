@@ -1,6 +1,9 @@
-package checks
+package checks_test
 
-import "testing"
+import (
+    "testing"
+    "github.com/CiscoCloud/distributive/checks"
+)
 
 func TestGroupExists(t *testing.T) {
 	t.Parallel()
@@ -10,8 +13,8 @@ func TestGroupExists(t *testing.T) {
 		{"root"}, {"bin"}, {"daemon"}, {"sys"}, {"adm"}, {"tty"},
 	}
 	badEggs := names
-	testParameters(validInputs, invalidInputs, GroupExists{}, t)
-	testCheck(goodEggs, badEggs, GroupExists{}, t)
+	testParameters(validInputs, invalidInputs, checks.GroupExists{}, t)
+	testCheck(goodEggs, badEggs, checks.GroupExists{}, t)
 }
 
 func TestGroupID(t *testing.T) {
@@ -27,14 +30,14 @@ func TestGroupID(t *testing.T) {
 		{"tty", "5"},
 	}
 	badEggs := appendParameter(names, "17389")
-	testParameters(validInputs, invalidInputs, GroupID{}, t)
-	testCheck(goodEggs, badEggs, GroupID{}, t)
+	testParameters(validInputs, invalidInputs, checks.GroupID{}, t)
+	testCheck(goodEggs, badEggs, checks.GroupID{}, t)
 }
 
 func TestUserExists(t *testing.T) {
 	t.Parallel()
-	testParameters(names, notLengthOne, UserExists{}, t)
-	testCheck([][]string{{"root"}}, names, UserExists{}, t)
+	testParameters(names, notLengthOne, checks.UserExists{}, t)
+	testCheck([][]string{{"root"}}, names, checks.UserExists{}, t)
 }
 
 func TestUserHasUID(t *testing.T) {
@@ -43,8 +46,8 @@ func TestUserHasUID(t *testing.T) {
 	invalidInputs := append(notLengthTwo, appendParameter(names, "notint")...)
 	goodEggs := [][]string{[]string{"root", "0"}} // not always true
 	badEggs := appendParameter(names, "0")
-	testParameters(validInputs, invalidInputs, UserHasUID{}, t)
-	testCheck(goodEggs, badEggs, UserHasUID{}, t)
+	testParameters(validInputs, invalidInputs, checks.UserHasUID{}, t)
+	testCheck(goodEggs, badEggs, checks.UserHasUID{}, t)
 }
 
 func TestUserHasGID(t *testing.T) {
@@ -53,8 +56,8 @@ func TestUserHasGID(t *testing.T) {
 	invalidInputs := append(notLengthTwo, appendParameter(names, "notint")...)
 	goodEggs := [][]string{[]string{"0", "0"}}
 	badEggs := appendParameter(names, "0")
-	testParameters(validInputs, invalidInputs, UserHasGID{}, t)
-	testCheck(goodEggs, badEggs, UserHasGID{}, t)
+	testParameters(validInputs, invalidInputs, checks.UserHasGID{}, t)
+	testCheck(goodEggs, badEggs, checks.UserHasGID{}, t)
 }
 
 func TestUserHasHomeDir(t *testing.T) {
@@ -62,6 +65,6 @@ func TestUserHasHomeDir(t *testing.T) {
 	validInputs := appendParameter(names, "/home/")
 	goodEggs := [][]string{[]string{"0", "/root"}} // not always true
 	badEggs := appendParameter(names, "/proc")
-	testParameters(validInputs, notLengthTwo, UserHasHomeDir{}, t)
-	testCheck(goodEggs, badEggs, UserHasHomeDir{}, t)
+	testParameters(validInputs, notLengthTwo, checks.UserHasHomeDir{}, t)
+	testCheck(goodEggs, badEggs, checks.UserHasHomeDir{}, t)
 }

@@ -1,12 +1,12 @@
-package checks
+package checks_test
 
 import (
     "testing"
-//    "github.com/CiscoCloud/distributive/checks"
+    "github.com/CiscoCloud/distributive/checks"
 )
 
 func TestZooKeeperQuorumConfig(t *testing.T) {
-    chk := ZooKeeperQuorum{config: "fixtures/zoo_test.cfg"}
+    chk := checks.ZooKeeperQuorum{Config: "fixtures/zoo_test.cfg"}
     servers, err := chk.LoadConfig()
     if err != nil {
         t.Errorf("error opening fixture: %s", err.Error())

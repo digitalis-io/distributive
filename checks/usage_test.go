@@ -1,7 +1,8 @@
-package checks
+package checks_test
 
 import (
 	"github.com/CiscoCloud/distributive/chkutil"
+    "github.com/CiscoCloud/distributive/checks"
 	"testing"
 )
 
@@ -17,16 +18,16 @@ func TestMemoryUsage(t *testing.T) {
 	t.Parallel()
 	validInputs := append(smallInts, bigIntsUnder100...)
 	invalidInputs := append(append(reallyBigInts, notInts...), negativeInts...)
-	testParameters(validInputs, invalidInputs, MemoryUsage{}, t)
-	testCheck(bigIntsUnder100, smallInts, MemoryUsage{}, t)
+	testParameters(validInputs, invalidInputs, checks.MemoryUsage{}, t)
+	testCheck(bigIntsUnder100, smallInts, checks.MemoryUsage{}, t)
 }
 
 func TestSwapUsage(t *testing.T) {
 	t.Parallel()
 	validInputs := append(smallInts, bigIntsUnder100...)
 	invalidInputs := append(append(notLengthOne, notInts...), negativeInts...)
-	testParameters(validInputs, invalidInputs, SwapUsage{}, t)
-	testCheck(bigIntsUnder100, [][]string{}, SwapUsage{}, t)
+	testParameters(validInputs, invalidInputs, checks.SwapUsage{}, t)
+	testCheck(bigIntsUnder100, [][]string{}, checks.SwapUsage{}, t)
 }
 
 func testFreeMemoryOrSwap(t *testing.T, chk chkutil.Check) {
@@ -48,12 +49,12 @@ func testFreeMemoryOrSwap(t *testing.T, chk chkutil.Check) {
 
 func TestFreeMemory(t *testing.T) {
 	t.Parallel()
-	testFreeMemoryOrSwap(t, FreeMemory{})
+	testFreeMemoryOrSwap(t, checks.FreeMemory{})
 }
 
 func TestFreeSwap(t *testing.T) {
 	t.Parallel()
-	testFreeMemoryOrSwap(t, FreeSwap{})
+	testFreeMemoryOrSwap(t, checks.FreeSwap{})
 }
 
 // $1 - path, $2 maxpercent
@@ -65,8 +66,8 @@ func TestDiskUsage(t *testing.T) {
 	)
 	goodEggs := [][]string{[]string{"/", "99"}}
 	badEggs := [][]string{[]string{"/", "1"}}
-	testParameters(validInputs, invalidInputs, DiskUsage{}, t)
-	testCheck(goodEggs, badEggs, DiskUsage{}, t)
+	testParameters(validInputs, invalidInputs, checks.DiskUsage{}, t)
+	testCheck(goodEggs, badEggs, checks.DiskUsage{}, t)
 }
 
 func TestInodeUsage(t *testing.T) {
@@ -76,5 +77,5 @@ func TestInodeUsage(t *testing.T) {
 	invalidInputs := append(notLengthTwo,
 		[][]string{{"", ""}, {}, {"testfail", "garble"}, {"/dev/testfail"}}...,
 	)
-	testParameters(validInputs, invalidInputs, DiskUsage{}, t)
+	testParameters(validInputs, invalidInputs, checks.DiskUsage{}, t)
 }

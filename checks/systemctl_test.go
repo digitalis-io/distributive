@@ -1,7 +1,8 @@
-package checks
+package checks_test
 
 import (
 	"testing"
+    "github.com/CiscoCloud/distributive/checks"
 )
 
 var activeServices = [][]string{
@@ -10,33 +11,33 @@ var activeServices = [][]string{
 
 func TestSystemctlLoaded(t *testing.T) {
 	t.Parallel()
-	testParameters(names, notLengthOne, SystemctlLoaded{}, t)
-	testCheck(activeServices, names, SystemctlLoaded{}, t)
+	testParameters(names, notLengthOne, checks.SystemctlLoaded{}, t)
+	testCheck(activeServices, names, checks.SystemctlLoaded{}, t)
 }
 
 func TestSystemctlActive(t *testing.T) {
 	t.Parallel()
-	testParameters(names, notLengthOne, SystemctlActive{}, t)
-	testCheck(activeServices, names, SystemctlLoaded{}, t)
+	testParameters(names, notLengthOne, checks.SystemctlActive{}, t)
+	testCheck(activeServices, names, checks.SystemctlLoaded{}, t)
 }
 
 func TestSystemctlSockPath(t *testing.T) {
 	t.Parallel()
 	invalidInputs := append(notLengthOne, names...)
-	testParameters(fileParameters, invalidInputs, SystemctlSockListening{}, t)
-	testCheck([][]string{}, fileParameters, SystemctlSockListening{}, t)
+	testParameters(fileParameters, invalidInputs, checks.SystemctlSockListening{}, t)
+	testCheck([][]string{}, fileParameters, checks.SystemctlSockListening{}, t)
 }
 
 func TestSystemctlTimer(t *testing.T) {
 	t.Parallel()
-	testParameters(names, notLengthOne, SystemctlTimer{}, t)
-	testCheck([][]string{}, names, SystemctlTimer{}, t)
+	testParameters(names, notLengthOne, checks.SystemctlTimer{}, t)
+	testCheck([][]string{}, names, checks.SystemctlTimer{}, t)
 }
 
 func TestSystemctlTimerLoaded(t *testing.T) {
 	t.Parallel()
-	testParameters(names, notLengthOne, SystemctlTimerLoaded{}, t)
-	testCheck([][]string{}, names, SystemctlTimerLoaded{}, t)
+	testParameters(names, notLengthOne, checks.SystemctlTimerLoaded{}, t)
+	testCheck([][]string{}, names, checks.SystemctlTimerLoaded{}, t)
 }
 
 func TestSystemctlUnitFileStatus(t *testing.T) {
@@ -47,6 +48,6 @@ func TestSystemctlUnitFileStatus(t *testing.T) {
 		{"systemd-initctl.service", "static"},
 	}
 	validInputs := appendParameter(names, "static")
-	testParameters(validInputs, notLengthTwo, SystemctlUnitFileStatus{}, t)
-	testCheck(goodEggs, validInputs, SystemctlUnitFileStatus{}, t)
+	testParameters(validInputs, notLengthTwo, checks.SystemctlUnitFileStatus{}, t)
+	testCheck(goodEggs, validInputs, checks.SystemctlUnitFileStatus{}, t)
 }
